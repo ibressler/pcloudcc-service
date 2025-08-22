@@ -1,0 +1,31 @@
+# pcloudcc.container
+# 1. Put this at: ~/.config/containers/systemd/pcloudcc.container
+# 2. Activate:    systemctl --user daemon-reload
+# 3. Start:       systemctl --user start pcloudcc
+# Notes:
+# - Attention: Set USERNAME to your pCloud username
+# - Adjust the local config path in the users home path
+# - Adjust the volumes to mount to get the desired sync folders into the container
+#   (needs to be activated by a successive run of `pcloudcc -k` in an interactive session
+#    for adding each sync folder by subcommand `sync add /localpath /remotepath`
+#    the remote path has to exist otherwise the sync is not set up)
+
+[Unit]
+Description=pCloudCC Service
+Requires=podman.service
+
+[Container]
+ContainerName=pcloudcc
+Environment=TZ=Europe/Berlin USERNAME=username@example.com
+AddCapability=CAP_SYS_ADMIN
+AddDevice=/dev/fuse
+Image=localhost/pcloudcc:latest
+Volume=/home/user/.config/pcloudcc:/root/.pcloud:Z
+Volume=/mnt/backups/user_drive:/mnt/user_drive:Z
+
+[Service]
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target default.target
