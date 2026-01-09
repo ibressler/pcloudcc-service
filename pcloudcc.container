@@ -20,7 +20,7 @@ Environment=TZ=Europe/Berlin USERNAME=username@example.com
 AddCapability=CAP_SYS_ADMIN
 AddDevice=/dev/fuse
 Image=localhost/pcloudcc:latest
-Volume=/home/user/.config/pcloudcc:/root/.pcloud:Z
+Volume=/home/%u/.config/pcloudcc:/root/.pcloud:Z
 Volume=/mnt/backups/user_drive:/mnt/user_drive:Z
 
 [Service]
