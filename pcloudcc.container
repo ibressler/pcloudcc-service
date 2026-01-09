@@ -21,7 +21,7 @@ AddCapability=CAP_SYS_ADMIN
 AddDevice=/dev/fuse
 Image=localhost/pcloudcc:latest
 Volume=/home/%u/.config/pcloudcc:/root/.pcloud:Z
-Volume=/mnt/backups/user_drive:/mnt/user_drive:Z
+Volume=/host_path_for_sync:/container_sync_path:Z
 
 [Service]
 Restart=always
