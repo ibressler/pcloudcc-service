@@ -54,7 +54,15 @@ A container based systemd service in userspace for the pCloud console client.
 
       ⯈ The sync path config is stored in pCloud client database and restarting pcloudcc container from service file below picks this up accordingly.
 
-5. Once the config is done and everything works as expected, stop the interactive container and install it with systemd by adjusting and copying `pcloudcc.container` to `~/.config/containers/systemd/pcloudcc.container` and
+5. Once the config is done and everything works as expected,
+    1. Stop the interactive container (Ctrl-D),
+    2. Make sure the volume mapping from the interactive session (above) matching the mappings in the systemd container unit `pcloudcc.container` and
+    3. Install the container unit by copying (or sym-linking):
 
-        systemctl --user daemon-reload
-        systemctl --user start pcloudcc
+           mkdir -p ~/.config/containers/systemd
+           cp pcloudcc.container ~/.config/containers/systemd/pcloudcc.container
+
+    5. Start the headless container:
+
+           systemctl --user daemon-reload
+           systemctl --user start pcloudcc
