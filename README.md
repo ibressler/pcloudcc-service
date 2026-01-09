@@ -21,11 +21,12 @@ A container based systemd service in userspace for the pCloud console client.
 
    Use the command line arguments `-d` for running it in the background and `-k` for issuing sub-commands to set up sync folders:
 
-    - For example, configure sync folders like this: In the interactive container session run
+    - For example, configure sync folders like this: In the interactive container session, run the daemon first (user credentials should be cached already) and connect to it with the command promnpt:
   
-          pcloudcc -s -u user@example.com -k
+          pcloudcc -d -u user@example.com
+          pcloudcc -k
 
-      Output ('?' shows pcloudcc commands help):
+      Output of the last command ('?' shows pcloudcc commands help):
       
           pCloud console client (git-lneely)
           pcloud> ?
@@ -42,14 +43,18 @@ A container based systemd service in userspace for the pCloud console client.
             quit(q): Exit this program
           pcloud>
 
-      Configure the earlier given host path (`/host_path_for_sync`) to sync to remote pCloud folder `/my-host`:
+      Configure the earlier given host path (`/host_path_for_sync`) to sync to remote pCloud folder `/my-host` (which has to exist already in pCloud!):
 
           sync add /container_sync_path /my-host
-          quit
+
+      Quit and stop the daemon and quit the interactive container session.
+      It will be started again headless by the systemd unit in the next step:
+      
+          finalize
 
       ⯈ The sync path config is stored in pCloud client database and restarting pcloudcc container from service file below picks this up accordingly.
 
-4. Once the config is done and everything works as expected, stop the interactive container and install it with systemd by adjusting and copying `pcloudcc.container` to `~/.config/containers/systemd/pcloudcc.container` and
+5. Once the config is done and everything works as expected, stop the interactive container and install it with systemd by adjusting and copying `pcloudcc.container` to `~/.config/containers/systemd/pcloudcc.container` and
 
         systemctl --user daemon-reload
         systemctl --user start pcloudcc
